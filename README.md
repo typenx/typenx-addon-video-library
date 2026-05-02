@@ -1,20 +1,29 @@
 # Typenx Video Library Addon
 
-Official Typenx addon for self-hosted video source distribution.
+A self-hosted video source backed by a JSON manifest of URLs you already control.
 
-This addon is intentionally simple: it reads a local JSON library and exposes Typenx addon routes for catalog, search, anime metadata, and episode video sources. It is useful for testing Typenx with media URLs you already control.
+Sometimes you don't want a Plex or Jellyfin server in the loop - you just have files on a CDN, an S3 bucket, or a folder served by nginx, and you want them to show up in Typenx. That's what this addon is for. Point it at a JSON file with your shows and episodes, and [Typenx Core](https://github.com/typenx/typenx-core) will treat it as a regular video source: catalog, search, metadata, and direct stream URLs.
 
-Typenx is a self-hostable anime discovery platform built around open addons. If that sounds useful, star [typenx-core](https://github.com/typenx/typenx-core).
+The addon does not upload, mirror, or transcode anything. It advertises URLs that you already host.
 
 ## Run
 
 ```bash
-npm install
-npm run build
-TYPENX_VIDEO_LIBRARY_FILE=./videos.example.json PORT=8790 npm start
+cargo build --release
+TYPENX_VIDEO_LIBRARY_FILE=./videos.example.json PORT=8790 cargo run --release
 ```
 
-Routes:
+## Library file
+
+Copy `videos.example.json` to `videos.local.json`, replace the sample URLs with your own MP4, HLS, or DASH links, then run:
+
+```bash
+TYPENX_VIDEO_LIBRARY_FILE=./videos.local.json cargo run --release
+```
+
+The schema is intentionally small - open the example file and you'll see exactly the shape it expects.
+
+## Routes
 
 - `GET /health`
 - `GET /manifest`
@@ -23,12 +32,18 @@ Routes:
 - `GET /anime/:id`
 - `POST /videos`
 
-## Library File
-
-Copy `videos.example.json` to `videos.local.json`, replace the sample URLs with your own self-hosted MP4/HLS/DASH URLs, then run:
+## Validate
 
 ```bash
-TYPENX_VIDEO_LIBRARY_FILE=./videos.local.json npm start
+cargo fmt --check
+cargo test
+cargo build --release
 ```
 
-The addon does not upload, mirror, or transcode media. It advertises URLs that you control.
+## Wiring it into Typenx Core
+
+```env
+TYPENX_DEFAULT_ADDONS=http://127.0.0.1:8790
+```
+
+Useful next to a metadata addon: the metadata addon supplies posters, synopses, and tracking; this addon supplies the actual stream URL.

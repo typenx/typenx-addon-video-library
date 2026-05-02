@@ -1,0 +1,21 @@
+[package]
+name = "typenx-addon-video-library"
+version = "0.1.0"
+edition = "2024"
+description = "Typenx addon for self-hosted anime video source distribution."
+license = "MIT"
+repository = "https://github.com/typenx/typenx-addon-video-library"
+
+[dependencies]
+axum = "0.8.7"
+chrono = { version = "0.4.42", default-features = false, features = ["clock", "std"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+tokio = { version = "1.48.0", features = ["macros", "net", "rt-multi-thread"] }
+tower-http = { version = "0.6.6", features = ["trace"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
+
+[dev-dependencies]
+http-body-util = "0.1.3"
+tower = { version = "0.5.2", features = ["util"] }
