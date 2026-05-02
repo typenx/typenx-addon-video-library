@@ -2,7 +2,9 @@
 
 Official Typenx addon for self-hosted video source distribution.
 
-This addon is intentionally simple: it reads a local JSON library and exposes Typenx addon routes for catalog, search, anime metadata, and episode video sources.
+This addon is intentionally simple: it reads a local JSON library and exposes Typenx addon routes for catalog, search, anime metadata, and episode video sources. It is useful for testing Typenx with media URLs you already control.
+
+Typenx is a self-hostable anime discovery platform built around open addons. If that sounds useful, star [typenx-core](https://github.com/typenx/typenx-core).
 
 ## Run
 
